@@ -6,6 +6,7 @@ module.exports = {
 
     if (query === '') {
       res.status(406).send('Needs a valid product id');
+      return;
     }
 
     getReviews(query, (err, results) => {
@@ -22,6 +23,7 @@ module.exports = {
 
     if (product_id === '') {
       res.status(406).send('Needs a valid product id');
+      return;
     }
 
     getMeta(product_id, (err, results) => {
@@ -34,7 +36,6 @@ module.exports = {
   },
   handleAddReview: (req, res) => {
     const { body } = req;
-
     addReview(body, (err, results) => {
       if (err) {
         res.status(404).send(err);

@@ -1,63 +1,106 @@
 /* eslint-disable import/extensions */
-/* eslint-disable react/button-has-type */
-import React, { useState, useEffect } from 'react';
-// icons
-import { FaStar, FaStarHalfAlt, FaRegStar, FaChevronCircleRight, FaChevronCircleLeft, FaFacebookSquare, FaTwitterSquare, FaPinterestSquare, FaCheck, FaRegSmileBeam } from 'react-icons/fa';
-// styled comps
+import axios from 'axios';
+import React, { useState, useEffect, useContext } from 'react';
+import { ProductContext } from './contexts/ProductContext.jsx';
+import { FaStar, FaRegStar, FaChevronCircleRight, FaChevronCircleLeft, FaChevronCircleUp, FaChevronCircleDown, FaFacebookSquare, FaTwitterSquare, FaPinterestSquare, FaCheck, FaRegSmileBeam } from 'react-icons/fa';
 import * as S from './OverviewStyledComponents.jsx';
-import product from './OverviewTESTproductReg.js';
-import productStyle from './OverviewTESTstyle.js';
+import * as RIT from './RatingsComponent/Individual_Tile/IndividualTileStyledComponent.jsx';
+import StarDisplay from './StarDisplay.jsx';
+import RatingsImageModal from './RatingsComponent/Individual_Tile/RatingsImageModal.jsx';
 
-// params: product obj, all_styles arr, ratings arr
-const Overview = () => {
-  const quantityMax = 15;
-  // get new style by id
-  const theStyle = (ID) => productStyle.results.filter((x) => x.style_id === ID)[0];
-  // start with default style (obj)
-  const [currentStyle, setCurrentStyle] = useState(
-    productStyle.results.filter((x) => x['default?'] === true)[0],
-  );
-  // reveiws info
-  const reviews = [{
-    1: 5, 2: 0, 3: 1, 4: 20, 5: 10,
-  }];
-  // current sku (obj of objs) for dropdown and cart
+const Overview = (props) => {
+  const {
+    product, styles, ratingsScore, loaded,
+  } = useContext(ProductContext);
+
+  const [currentStyle, setCurrentStyle] = useState({});
+  const [current, setCurrent] = useState(null);
+  const [mainImg, setMainImg] = useState('');
+  const [hovered, setHovered] = useState(0);
+  const [cartHovered, setCartHovered] = useState(false);
+  const [sampleHovered, setSampleHovered] = useState('');
+  const [reviewHovered, setReviewHovered] = useState(false);
+  const [fbHovered, setFbHovered] = useState(false);
+  const [twHovered, setTwHovered] = useState(false);
+  const [ptHovered, setPtHovered] = useState(false);
+  const [cartFlag, setCartFlag] = useState(null);
   const [sizes, setSizes] = useState(['Select Size']);
   const [size, setSize] = useState('');
   const [quantities, setQuantities] = useState(-1);
   const [quantity, setQuantity] = useState(1);
-  // star button state
   const [isFavorited, setIsFavorited] = useState(false);
-  // image counter
-  const [current, setCurrent] = useState(0);
-  const [mainImg, setMainImg] = useState(currentStyle.photos[current].url);
-  const length = currentStyle.photos.length;
+  const [bigImageModal, setBigImageModal] = useState(false);
+  const quantityMax = 15;
+
+  /* ----------------
+  |   ON DATA LOAD   |
+  ------------------*/
+  useEffect(() => {
+    const test = styles.filter((x) => x['default?'] === true)[0];
+    if (test) {
+      setCurrent(0);
+      setCurrentStyle(test);
+      if (currentStyle !== {} && (current || current === 0)) {
+        setMainImg(currentStyle.photos[current].url);
+      }
+    }
+  }, [loaded]);
+
+  /* --------------------------------------------
+  |   IMG SLIDER FUNCTIONS & OTHER USE_EFFECTS   |
+  ----------------------------------------------*/
   const prevSlide = () => {
-    setCurrent(current === 0 ? length - 1 : current - 1);
+    let l = currentStyle.photos.length;
+    setCurrent(current === 0 ? l - 1 : current - 1);
   };
   const nextSlide = () => {
-    setCurrent(current === length - 1 ? 0 : current + 1);
+    let l = currentStyle.photos.length;
+    setCurrent(current === l - 1 ? 0 : current + 1);
   };
-  // click a style button
+  const theStyle = (ID) => styles.filter((x) => x.style_id === ID)[0];
   const styleOnClick = (event) => {
     // if already selected, do nothing
     currentStyle.id !== event.target.value ?
       setCurrentStyle(theStyle(parseInt(event.target.value, 10))) : null;
-    setMainImg(currentStyle.photos[current].url);
   };
+  useEffect(() => {
+    if (current !== null) {
+      let newImg = currentStyle.photos[0].url;
+      if (current < currentStyle.photos.length) {
+        newImg = currentStyle.photos[current].url;
+      } else {
+        setCurrent(0);
+      }
+      setMainImg(newImg);
+    }
+  }, [current, currentStyle]);
+  //update dropdowns when style changes
+  useEffect(() => {
+    setSizes(['Select Size']);
+  }, [currentStyle]);
+  useEffect(() => {
+    if (sizes.includes('Select Size')) {
+      setQuantities(-1);
+    }
+  }, [sizes]);
+  useEffect(() => {
+    if (styles.length > 0) {
+      let test = styles.filter((x) => x['default?'] === true)[0];
+      test === undefined ? setCurrentStyle(styles[0]) : setCurrentStyle(test);
+    }
+  }, [styles]);
+
+  /* ------------------
+  |   CLICK HANDLERS   |
+  ---------------------*/
   // star button click handler
   const favorite = () => {
     setIsFavorited(!isFavorited);
   };
-  // top ratings score click handler
-  // const jumpToRatings = () => {
-  // };
-  const imgOnClick = (event) => { //PROBLEM
-    setCurrent(event.target.value);
-    setMainImg(currentStyle.photos[event.target.value].url);
+  const imgOnClick = (event) => {
+    setCurrent(parseInt(event.target.value));
   };
-  // when change style, should have skuID saved
-  // shows list of options in dropdown
+  // for dropdowns
   const getSizes = () => {
     // first touch
     if (sizes.includes('Select Size')) {
@@ -81,119 +124,231 @@ const Overview = () => {
   const selectQuantity = (event) => {
     setQuantity(event.target.value);
   };
+
+  /* --------
+  |   CART   |
+  -----------*/
   const addToCart = () => {
-    // make post req to db with sku number and quantity
+    let id;
+    for (var key in currentStyle.skus) {
+      if (currentStyle.skus[key].size === size) {
+        //what about repeated sizes? should be fine since should depleat first skus then next for sizes so it ends up closer to only having one sku per size
+        id = key;
+      }
+    };
+    for (var i = 0; i < quantity; i++) {
+      axios.post('/api/cart', { sku_id: id })
+        .then((response) => {
+          setCartFlag(true);
+        })
+        .catch((err) => {
+          setCartFlag(false);
+          alert("We're sorry. There's been an error, please try refreshing the page or contacting our 24 hour customer service.");
+        });
+    }
+  };
+  useEffect(() => {
+    setSizes(['Select Size']);
+    if (cartFlag === true) {
+      alert("HORRAY! Stay tuned for your confirmation");
+    }
+  }, [cartFlag]);
+  const earlyCart = () => {
+    // open the size dropdown, and a message should appear above the dropdown stating
+    alert("Please select a size first");
   };
 
+  /* ------------
+  |   HOVERING   |
+  --------------*/
+  const enterHovered = (event) => {
+    event.preventDefault();
+    setHovered(event.target.value);
+  };
+  const exitHovered = () => {
+    event.preventDefault();
+    setHovered(0);
+  }
+  const toggleCartHovered = () => {
+    setCartHovered(!cartHovered);
+  };
+  const enterSample = (event) => {
+    //set the style obj = transform scale()
+    // S.sampleHover.transform = newScale
+    setSampleHovered(event.target.name);
+  };
+  const exitSample = () => {
+    setSampleHovered('');
+  };
+  const toggleReviewHovered = () => {
+    setReviewHovered(!reviewHovered);
+  };
+  const toggleFbHovered = () => {
+    setFbHovered(!fbHovered);
+  };
+  const toggleTwHovered = () => {
+    setTwHovered(!twHovered);
+  };
+  const togglePtHovered = () => {
+    setPtHovered(!ptHovered);
+  };
+
+  /* ----------
+  |   RETURN   |
+  -------------*/
+  // if (loaded) {
+  const photos = currentStyle.photos ?? [];
+  const stylez = styles ?? [];
+  const featurez = product.features ?? [];
   return (
-    <>
+    <div>
       <S.Container>
         <S.Main>
           <S.LeftArrow onClick={prevSlide}><FaChevronCircleLeft /></S.LeftArrow>
-          {/* {currentStyle.photos.map((x, i) => {
-            if (i === current) {
-              return <S.BigImg className="imgFormat" src={x.url} alt="pic" />;
-            }
-          })} */}
-          <S.BigImg className="imgFormat" src={mainImg} alt="pic" />
+          <S.BigImg
+            className="imgFormat"
+            src={mainImg}
+            alt={currentStyle.name}
+            onClick={() => setBigImageModal(true)}
+          />
+          <RIT.ImageModalContainer show={bigImageModal} onClick={() => setBigImageModal(false)}>
+            <RIT.ModalImage
+              src={mainImg}
+              style={{cursor: "-moz-zoom-out",
+                cursor: "-webkit-zoom-out",
+                cursor: "zoom-out" }}
+            />
+          </RIT.ImageModalContainer>
           <S.ImgCards>
-            {/* issue here vv */}
-            {currentStyle.photos.map((x, i) => {
-              if (i === current) {
-                return <S.ImgSample onClick={imgOnClick} className="imgFormat" url={x.thumbnail_url} value={i} style={{ border: "3px solid #FBD63F" }} />;
-              } else {
-                return <S.ImgSample onClick={imgOnClick} className="imgFormat" url={x.thumbnail_url} value={i} />;
-              }
+            <FaChevronCircleUp style={{ visibility: `${current === 0 ? "hidden" : "visible"}`, color: "#c48f35", paddingLeft: 12, paddingBottom: 2 }}
+              onClick={prevSlide} />
+            {photos.map((x, i) => {
+              return <S.ImgSample key={x.thumbnail_url + i}
+                onMouseEnter={enterSample}
+                onMouseLeave={exitSample}
+                style={{ transform: `${sampleHovered == x.thumbnail_url ? "scale(1.15, 1.15)" : "scale(1, 1)"}`, border: `${current === i ? "3px solid #FBD63F" : "none"}` }}
+                onClick={imgOnClick}
+                className="imgFormat"
+                url={x.thumbnail_url}
+                name={x.thumbnail_url}
+                value={i} />;
             })}
+            <FaChevronCircleDown style={{ visibility: `${current === photos.length - 1 ? "hidden" : "visible"}`, color: "#c48f35", paddingLeft: 12, paddingTop: 2 }}
+              onClick={nextSlide} />
           </S.ImgCards>
           <S.RightArrow onClick={nextSlide}><FaChevronCircleRight /></S.RightArrow>
         </S.Main>
         <S.Content>
           <h2 className="bigText">{product.slogan}</h2>
-          <p>{product.description}</p>
-          <FaFacebookSquare />
-          <FaTwitterSquare />
-          <FaPinterestSquare />
+          <p className="bigText">{product.description}</p>
         </S.Content>
         <S.Side>
           <div>
-            {reviews && (
-              <span style={{ float: "right" }}>
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStar />
-                <FaStarHalfAlt />
-                Read all [#] reviews&nbsp;&nbsp;&nbsp;
-              </span>
-            )}
-            <h4 className="subText">{product.category}</h4>
-            <h1 className="bigText">{product.name}</h1>
-
+            <StarDisplay stars={{ width: '20', height: '20' }} />
+            <span ref={props.reference}
+              onClick={props.jumpClick} className="bigText"
+              onMouseEnter={toggleReviewHovered}
+              onMouseLeave={toggleReviewHovered}
+              style={{ float: "right", cursor: "pointer", color: `${reviewHovered ? "blue" : "black"}`, textDecoration: `${reviewHovered ? "underline blue" : "none"}` }}>Read all {ratingsScore.numberOfRatings} reviews</span>
+          </div>
+          <div>
+            <h4 className="subText"
+              style={{ margin: 0, padding: 0, paddingTop: 10 }}>{product.category}</h4>
+          </div>
+          <div>
+            <h1 className="bigText" style={{ margin: 0, padding: 0 }}>{product.name}</h1>
             {currentStyle.sale_price !== null ?
               <h2>
-                <strike style={{ color: "red" }}>${currentStyle.original_price}</strike>
+                <strike style={{ color: 'red' }}>${currentStyle.original_price}</strike>
                 &nbsp;&nbsp;SALE:&nbsp;${currentStyle.sale_price}
               </h2> :
               <h2>${currentStyle.original_price}</h2>}
           </div>
           <div>
-            <h3 className="bigText">
-              Choose your style:
+            <h3 className="bigText"
+              style={{ marginBottom: 0 }}>
+              Choose your style:&nbsp;
               {currentStyle.name}
             </h3>
             <S.Styles>
-              {productStyle.results.map((x) =>
-                <S.StylesButton onClick={styleOnClick}
+              {stylez.map((x) =>
+                <S.StylesButton key={x.style_id} onClick={styleOnClick}
                   url={x.photos[0].thumbnail_url}
-                  value={x.style_id}>
+                  value={x.style_id}
+                  onMouseEnter={enterHovered}
+                  onMouseLeave={exitHovered}
+                  style={{ transform: `${hovered == x.style_id ? "scale(1.15, 1.15)" : "scale(1, 1)"}` }}>
                   {x === currentStyle &&
                     <FaCheck style={{ color: "yellow" }} />}
                 </S.StylesButton>)}
             </S.Styles>
             <S.Styles>
-              <select onClick={getSizes} onChange={selectSize} className="imgFormat" name="size">
-                {sizes.map((x) => <option value={x}>{x}</option>)}
+              <select onClick={getSizes}
+                onChange={selectSize}
+                className="imgFormat"
+                name="size"
+                style={{ width: "6rem", height: "2rem", boxShadow: "2px 2px 2px 1px #d3d3d3" }}>
+                {!sizes.includes('Select Size') ? sizes.map((x) => <option key={x} value={x}>{x}</option>) : <option>Select Size</option>}
               </select>
-              <select onClick={getQuantities} onChange={selectQuantity} className="imgFormat" name="quantity">
+              <select onClick={getQuantities}
+                onChange={selectQuantity}
+                className="imgFormat"
+                name="quantity" style={{ width: "3rem", height: "2rem", boxShadow: "2px 2px 2px 1px #d3d3d3" }}>
                 {quantities < 0 ? <option>-</option> :
                   quantities >= 15 ? [...Array(quantityMax),
                   ].map((undefined, i) => (
-                    <option value={i+1}>{i + 1}</option>
+                    <option key={i} value={i + 1}>{i + 1}</option>
                   ))
                     : [...Array(quantities),].map((undefined, i) => (
-                      <option value={i+1}>{i + 1}</option>
+                      <option key={i} value={i + 1}>{i + 1}</option>
                     ))}
-              </select>
-              <button onClick={favorite} style={{ padding: 10 }}>{isFavorited ?
-                <FaStar /> :
-                <FaRegStar />}
+              </select> &nbsp;&nbsp;&nbsp;
+              {/* , width: 35, height: 35 */}
+              <button onClick={favorite}
+                style={{ borderRadius: '100%', marginTop: 5, boxShadow: "2px 2px 2px 1px #d3d3d3", display: "flex", justifyContent: "center", alignItems: "center" }} >{isFavorited ?
+                  <FaStar /> :
+                  <FaRegStar />}
               </button>
             </S.Styles>
-            <div style={{ marginTop: 5 }}>
-              <button className="bigText"><h3 onClick={addToCart}>ADD TO CART ++</h3></button>
+            <div style={{ display: "inline", marginLeft: 15, marginBottom: 10 }}>
+              {!sizes.includes('OUT OF STOCK')
+                && <button onClick={sizes.includes('Select Size') ? earlyCart : addToCart}
+                  onMouseEnter={toggleCartHovered}
+                  onMouseLeave={toggleCartHovered}
+                  style={{ boxShadow: "2px 2px 2px 1px #d3d3d3", transform: `${cartHovered ? "scale(1, 1)" : "scale(1.15, 1.15)"}`, padding: 10 }}
+                  className="bigText">
+                  <h3 style={{ fontWeight: 600 }}>{cartHovered ? "ADD TO CART++" : "ADD TO CART"}</h3></button>}
+              <S.Socials>
+                <FaFacebookSquare
+                  onMouseEnter={toggleFbHovered}
+                  onMouseLeave={toggleFbHovered}
+                  style={{ color: `${fbHovered ? "#3b5998" : "#899499"}`, height: 25, width: 25, borderRadius: "5%", boxShadow: "2px 2px 2px 1px #d3d3d3" }} />
+                <FaTwitterSquare
+                  onMouseEnter={toggleTwHovered}
+                  onMouseLeave={toggleTwHovered}
+                  style={{ color: `${twHovered ? "#1DA1F2" : "#899499"}`, height: 25, width: 25, boxShadow: "2px 2px 2px 1px #d3d3d3" }} />
+                <FaPinterestSquare
+                  onMouseEnter={togglePtHovered}
+                  onMouseLeave={togglePtHovered}
+                  style={{ color: `${ptHovered ? "#E60023" : "#899499"}`, height: 25, width: 25, boxShadow: "2px 2px 2px 1px #d3d3d3" }} />
+              </S.Socials>
             </div>
-            {/* ^^ If the default ‘Select Size’ is currently
-            selected: Clicking this button should open
-            the size dropdown, and a message should
-            appear above the dropdown stating “Please
-            select size”.
-            If there is no stock: This button should be hidden
-            If both a valid size and valid quantity are
-            selected: Clicking this button will add the product to the user’s cart. */}
           </div>
         </S.Side>
         <S.Features>
           <S.FeaturesList>
-            <li className="bigText" style={{ listStyleType: "none", marginBottom: 7, fontStyle: "italic" }}><FaRegSmileBeam style={{ color: "#c48f35" }} />&nbsp;&nbsp;110% Satisfaction Guaranteed*</li>
-            {product.features.map((x) => {
-              return <li className="bigText" style={{ listStyleType: "none", marginBottom: 7, fontStyle: "italic" }}><FaRegSmileBeam style={{ color: "#c48f35" }} />&nbsp;&nbsp;{x.feature}: {x.value}</li>;
+            {featurez.map((x) => {
+              return <li key={x.value}
+                className="bigText"
+                style={{ listStyleType: "none", marginBottom: 7, fontStyle: "italic" }}><FaRegSmileBeam style={{ color: "#c48f35" }} />&nbsp;&nbsp;{x.feature}{x.value === null ? null : `: ${x.value}`}</li>;
             })}
           </S.FeaturesList>
         </S.Features>
       </S.Container>
-    </>
+    </div>
   );
+  // }
+  // return <div>Hang tight...</div>;
 };
 
 export default Overview;

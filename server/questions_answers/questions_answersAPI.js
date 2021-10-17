@@ -1,8 +1,12 @@
 const axios = require('axios');
 const config = require('../../config.js');
+const Redis = require('redis');
 
 const url = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/qa/questions';
 const answersUrl = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/qa/answers';
+const TTL = 3600;
+
+const client = Redis.createClient();
 
 module.exports = {
   getQuestions: (query, callback) => {
@@ -13,7 +17,6 @@ module.exports = {
       },
       params: query,
     };
-
     axios(options)
       .then((results) => {
         callback(null, results.data);
@@ -30,7 +33,6 @@ module.exports = {
       },
       params: query,
     };
-
     axios(options)
       .then((results) => {
         callback(null, results.data);
