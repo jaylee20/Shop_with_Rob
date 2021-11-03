@@ -1,12 +1,5 @@
 # Shop_with_Rob
 
-<<<<<<< HEAD
-To use this repo:
-
-1. Fork and clone repo to your local machine.
-2. Run `npm install` in the terminal.
-
-=======
 #To use this repo:
 
 1. Fork and clone repo to your local machine.
@@ -47,7 +40,6 @@ To use this repo:
 
 
 ##This is a chanterelle mushroom:
->>>>>>> a5e0b2f8a2ba6ac2b613208a84b60a872bf4408e
 ****************************************************************************************************
 *********************************************,,,,,,,,,,,,,,*****************************************
 ********************************,,,,,,,,,,,,,,*/******,,,**,,,..,..,,*******************************
