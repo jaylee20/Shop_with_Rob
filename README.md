@@ -27,7 +27,7 @@ Project Catwalk comprises a complete refresh and modernization of Shop With Rob'
    1. Fork and clone repository to your local machine.
    2. Open the project and open the terminal.
    3. Create and place an API Key (Follow the API Key Information steps below).
-   4. Run `npm install` in the terminal.
+   4. Run `npm install` in the terminal. More information on [NPM](https://www.npmjs.com/)
    5. Run `npm start` in the terminal. This will start the server.
    6. Run `npm run webpack` in the terminal. This will ensure that webpack has been installed.
    7. Run `npm run react-dev` in the terminal. This will bundle all client side files.
@@ -36,9 +36,9 @@ Project Catwalk comprises a complete refresh and modernization of Shop With Rob'
 
 2. **API Key Information**
 
-   1. Copy the config.example.js in the config folder
-   2. Rename it to config.js
-   3. Replace TOKEN value of 'GITHUBKEY' with your personal access token
+   1. Copy the config.example.js in the config folder.
+   2. Rename config.example.js to config.js.
+   3. Replace TOKEN value of 'GITHUBKEY' with your personal access token.
    <p></p>
 
 ---
