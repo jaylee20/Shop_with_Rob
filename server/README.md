@@ -69,7 +69,7 @@
       | product_id | integer | Required ID of the Product requested |
 
       - _Product Information Parameter Example_:
-        - http://localhost:3000/api/products/61576
+        - http://localhost:3000/api/products/11
 
    4. **Sample Data:**
 
@@ -107,7 +107,7 @@
       | product_id | integer | Required ID of the Product requested |
 
       - _Product Styles Parameter Example_:
-        - http://localhost:3000/api/products/61576/style
+        - http://localhost:3000/api/products/1/style
 
    4. **Sample Data:**
 
@@ -163,7 +163,7 @@
       | product_id | integer | Required ID of the Product requested |
 
       - _Related Product Parameter Example_:
-        - http://localhost:3000/api/products/61576/related
+        - http://localhost:3000/api/products/1/related
 
    4. **Sample Data:**
 
