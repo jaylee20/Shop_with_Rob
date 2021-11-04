@@ -1,5 +1,7 @@
 # Client-Side Documentation - Ratings and Reviews:
 
+---
+
 ## Ratings and Reviews Component Information:
 
 - **Purpose:**
