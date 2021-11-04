@@ -4,12 +4,20 @@
 
 1. Fork and clone repo to your local machine.
 2. Open the project and open the terminal.
-3. Run `npm install`.
-4. Run `npm start` in the terminal. //for the server
-5. Run `npm webpack` in a new terminal(keep the last one going!).
+3. Create and place an API Key. //Follow the # enter api key steps below.
+4. Run `npm install` in the terminal.
+5. Run `npm start` in the terminal. //for the server
+6. Run `npm run webpack` in a new terminal(keep the last one going!).
 7. Run `npm run react-dev` in the terminal from step 5. //for bundling
 
-/////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
+# enter api key
+1. Copy config.example.js in the config folder
+2. Rename it to config.js
+3. Replace TOKEN value of 'GITHUBKEY' with your personal access token
+
+///////////////////////////////////////////////////////////////////////
 
 #Further learning:
 

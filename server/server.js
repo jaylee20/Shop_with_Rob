@@ -3,11 +3,13 @@
 
 const express = require('express');
 const path = require('path');
+const compression = require('compression');
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
+app.use(compression());
 
 const productRouter = require('./products/server');
 const cartRouter = require('./cart/server');

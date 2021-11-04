@@ -1,11 +1,11 @@
 const axios = require('axios');
 const Redis = require('redis');
 // eslint-disable-next-line import/extensions
-const config = require('../../config.js');
-
-const client = Redis.createClient();
+const { TOKEN } = require('../../config/config.js');
 
 const url = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/products';
+
+const client = Redis.createClient();
 const TTL = 3600;
 
 module.exports = {
@@ -13,7 +13,7 @@ module.exports = {
     const options = {
       url: `${url}/`,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
       params: query,
     };
@@ -36,7 +36,7 @@ module.exports = {
         const options = {
           url: `${url}/${id}`,
           headers: {
-            Authorization: config.TOKEN,
+            Authorization: TOKEN,
           },
         };
         axios(options)
@@ -60,7 +60,7 @@ module.exports = {
         const options = {
           url: `${url}/${id}/styles`,
           headers: {
-            Authorization: config.TOKEN,
+            Authorization: TOKEN,
           },
         };
         axios(options)
@@ -84,7 +84,7 @@ module.exports = {
         const options = {
           url: `${url}/${id}/related`,
           headers: {
-            Authorization: config.TOKEN,
+            Authorization: TOKEN,
           },
         };
         axios(options)

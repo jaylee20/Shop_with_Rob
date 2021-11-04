@@ -1,6 +1,6 @@
 const axios = require('axios');
 // eslint-disable-next-line import/extensions
-const config = require('../../config.js');
+const { TOKEN } = require('../../config/config.js');
 
 const url = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/cart';
 
@@ -9,7 +9,7 @@ module.exports = {
     const options = {
       url,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
     };
 
@@ -26,7 +26,7 @@ module.exports = {
       method: 'post',
       url: `${url}/`,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
       data,
     };

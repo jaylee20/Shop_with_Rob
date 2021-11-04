@@ -1,11 +1,8 @@
 const axios = require('axios');
-const Redis = require('redis');
 // eslint-disable-next-line import/extensions
-const config = require('../../config.js');
-const client = Redis.createClient();
+const { TOKEN } = require('../../config/config');
 
 const url = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/reviews';
-const TTL = 3600;
 
 module.exports = {
   getReviews: (query, callback) => {
@@ -14,7 +11,7 @@ module.exports = {
     const options = {
       url: `${url}/`,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
       params: query,
     };
@@ -30,13 +27,12 @@ module.exports = {
     const options = {
       url: `${url}/meta/`,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
       params: query,
     };
     axios(options)
       .then((results) => {
-        // client.setex(`meta_productID_${product_id}`, TTL, JSON.stringify(results.data));
         callback(null, results.data);
       })
       .catch((err) => {
@@ -48,7 +44,7 @@ module.exports = {
       method: 'post',
       url: `${url}/`,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
       data,
     };
@@ -66,7 +62,7 @@ module.exports = {
       method: 'put',
       url: `${url}/${review_id}/helpful`,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
     };
 
@@ -83,7 +79,7 @@ module.exports = {
       method: 'put',
       url: `${url}/${review_id}/report`,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
     };
 

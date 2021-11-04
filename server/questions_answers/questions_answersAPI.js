@@ -1,19 +1,16 @@
 const axios = require('axios');
-const config = require('../../config.js');
-const Redis = require('redis');
+
+const { TOKEN } = require('../../config/config.js');
 
 const url = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/qa/questions';
 const answersUrl = 'https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/qa/answers';
-const TTL = 3600;
-
-const client = Redis.createClient();
 
 module.exports = {
   getQuestions: (query, callback) => {
     const options = {
       url: `${url}/`,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
       params: query,
     };
@@ -29,7 +26,7 @@ module.exports = {
     const options = {
       url: `${url}/${question_id}/answers`,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
       params: query,
     };
@@ -46,7 +43,7 @@ module.exports = {
       method: 'post',
       url: `${url}`,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
       data,
     };
@@ -64,7 +61,7 @@ module.exports = {
       method: 'post',
       url: `${url}/${question_id}/answers`,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
       data,
     };
@@ -82,7 +79,7 @@ module.exports = {
       method: 'put',
       url: `${url}/${question_id}/helpful`,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
     };
 
@@ -99,7 +96,7 @@ module.exports = {
       method: 'put',
       url: `${url}/${question_id}/report`,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
     };
 
@@ -116,7 +113,7 @@ module.exports = {
       method: 'put',
       url: `${answersUrl}/${answer_id}/helpful`,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
     };
 
@@ -133,7 +130,7 @@ module.exports = {
       method: 'put',
       url: `${answersUrl}/${answer_id}/report`,
       headers: {
-        Authorization: config.TOKEN,
+        Authorization: TOKEN,
       },
     };
 

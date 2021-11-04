@@ -3,7 +3,7 @@ import styles from 'styled-components';
 
 export const Container = styles.div`
   display: grid;
-  grid-template-rows: .2fr .1fr 3fr 1fr;
+  grid-template-rows: .2fr .1fr 2fr 1fr;
   grid-template-columns: 1fr 3fr;
   padding-left: 200px;
   padding-right: 200px;
@@ -36,7 +36,7 @@ export const Content = styles.div`
   grid-area: content;
   overflow-y: auto;
   min-height: 450px;
-  max-height: 1000px;
+  max-height: 600px;
 `;
 
 export const ReviewAction = styles.div`
