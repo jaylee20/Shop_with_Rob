@@ -1,4 +1,4 @@
-# Shop_with_Rob
+# Shop With Rob
 
 ## Project Description:
 
@@ -14,7 +14,7 @@ Project Catwalk comprises a complete refresh and modernization of Shop With Rob'
 - **Back-End:** Node.js, Express, Redis Cache
 - **Testing:** CircleCi, Jest, React Testing Library
 
-## How to use this repository:
+## How To Use This Repository:
 
 1. **Instructions:**
 
@@ -35,7 +35,7 @@ Project Catwalk comprises a complete refresh and modernization of Shop With Rob'
    3. Replace TOKEN value of 'GITHUBKEY' with your personal access token
    <p></p>
 
-## Links to other README's within this repository:
+## Links To Other README's Within This Repository:
 
 1.  **API Documentation - Product Information:**
 
@@ -49,10 +49,10 @@ Project Catwalk comprises a complete refresh and modernization of Shop With Rob'
     - **Purpose:**
       - This README documents and describes the client-side web application, specifically the Ratings and Reviews component.
     - **Link:**
-      - [Client-Side README](https://github.com/jaylee20/Shop_with_Rob/blob/main/server/README.md)
+      - [Client-Side README](https://github.com/jaylee20/Shop_with_Rob/blob/main/client/README.md)
       <p></p>
 
-## Further learning:
+## Further Learning:
 
 1. **How to install npm on your own on VSCode:**
 
@@ -60,7 +60,7 @@ Project Catwalk comprises a complete refresh and modernization of Shop With Rob'
    2. Run `npm install` in the terminal. This will create your package-lock.json file.
    <p></p>
 
-1. **How to install webpack on your own:**
+2. **How to install webpack on your own:**
    1. Run `npm install --save-dev webpack` to download webpack locally.
    2. Run `npm install --save-dev webpack-cli` if you want to run webpack from the terminal (recommended).
    3. Make a new file named `webpack.config.js`. This will be used to tell webpack where to look for its input and where to output the bundled file.
