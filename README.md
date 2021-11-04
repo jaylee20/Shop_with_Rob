@@ -8,11 +8,15 @@ Shop with Rob's client-facing retail web-portal has become significantly outdate
 Project Catwalk comprises a complete refresh and modernization of Shop With Rob's retail web-portal, with the goal of increasing customer satisfaction and average session time.
 <p></p>
 
+---
+
 ## Project Tech Stack:
 
 - **Front-End:** JavaScript, React, Styled Components
 - **Back-End:** Node.js, Express, Redis Cache
 - **Testing:** CircleCi, Jest, React Testing Library
+
+---
 
 ## How To Use This Repository:
 
@@ -35,6 +39,8 @@ Project Catwalk comprises a complete refresh and modernization of Shop With Rob'
    3. Replace TOKEN value of 'GITHUBKEY' with your personal access token
    <p></p>
 
+---
+
 ## Links To Other README's Within This Repository:
 
 1.  **API Documentation - Product Information:**
@@ -52,6 +58,8 @@ Project Catwalk comprises a complete refresh and modernization of Shop With Rob'
       - [Client-Side README](https://github.com/jaylee20/Shop_with_Rob/blob/main/client/README.md)
       <p></p>
 
+---
+
 ## Further Learning:
 
 1. **How to install npm on your own on VSCode:**
@@ -65,7 +73,7 @@ Project Catwalk comprises a complete refresh and modernization of Shop With Rob'
    2. Run `npm install --save-dev webpack-cli` if you want to run webpack from the terminal (recommended).
    3. Make a new file named `webpack.config.js`. This will be used to tell webpack where to look for its input and where to output the bundled file.
    4. Add your configuration info into `webpack.config.js`. Make sure that your `entry` and `output` paths match your folder set up. You can name the files whatever you like, however it's standard to name the main(exports the folder content) file `index.js`.
-      Note: If your output path file cannot be found(could be the wrong path), webpack will make the file for you!
+      > Note: If your output path file cannot be found(could be the wrong path), webpack will make the file for you!
       - Example:
         ```
         module.exports = {
@@ -87,3 +95,5 @@ Project Catwalk comprises a complete refresh and modernization of Shop With Rob'
           },
         ```
    6. Run `npm run react-dev`(or whatever you chose to name the command in 5.) in its own terminal. Webpack will automatically re-build the output/browser-using file for you whenever you make a change to your client-side `index.js`-touching code(thanks to the `-w`).
+
+---

@@ -1,5 +1,7 @@
 # API Documentation - Product Information:
 
+---
+
 ## API Information:
 
 - **Purpose:**
@@ -11,7 +13,9 @@
 - **API Documentation Reference**:
   - [Product Information](https://learn-2.galvanize.com/cohorts/2910/blocks/94/content_files/Front%20End%20Capstone/project-atelier-catwalk/products.md)
 
-## API EndPoints:
+---
+
+## API Endpoints:
 
 1. ### List Products [Method: GET Request]:
 
@@ -171,3 +175,5 @@
       7
     ],
    ```
+
+---
