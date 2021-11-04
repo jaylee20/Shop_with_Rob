@@ -1,13 +1,19 @@
-# API Documentation - Product Information :
+# API Documentation - Product Information:
 
-**API Information:**
+## API Information:
 
-- **Purpose:** Get Product information.
-- **API Documentation Reference**: [Product Information](https://learn-2.galvanize.com/cohorts/2910/blocks/94/content_files/Front%20End%20Capstone/project-atelier-catwalk/products.md)
+- **Purpose:**
+  - The Product Information API endpoint will:
+    1. Show all products in our store.
+    2. Provide detailed information for each product.
+    3. List any related product(s).
+    <p></p>
+- **API Documentation Reference**:
+  - [Product Information](https://learn-2.galvanize.com/cohorts/2910/blocks/94/content_files/Front%20End%20Capstone/project-atelier-catwalk/products.md)
 
-**API EndPoints:**
+## API EndPoints:
 
-1. **List Products [Method: GET Request]:**
+1. ### List Products [Method: GET Request]:
 
    1. **API End Point:**
       - Base API: https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/products
@@ -45,7 +51,7 @@
       ]
    ```
 
-2. **Product Information [Method: GET Request]:**
+2. ### Product Information [Method: GET Request]:
 
    1. **API End Point:**
       - Base API: https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/products/:product_id
@@ -58,8 +64,8 @@
       | ---------- | ------- | ------------------------------------ |
       | product_id | integer | Required ID of the Product requested |
 
-      - _Product Information Parameter_:
-        - Example: http://localhost:3000/api/products/61576
+      - _Product Information Parameter Example_:
+        - http://localhost:3000/api/products/61576
 
    4. **Sample Data:**
 
@@ -84,7 +90,7 @@
      }
    ```
 
-3. **Product Styles [Method: GET Request]:**
+3. ### Product Styles [Method: GET Request]:
 
    1. **API End Point:**
       - Base API: https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/products/:product_id/styles
@@ -96,8 +102,8 @@
       | ---------- | ------- | ------------------------------------ |
       | product_id | integer | Required ID of the Product requested |
 
-      - _Product Styles Parameter_:
-        - Example: http://localhost:3000/api/products/61576/style
+      - _Product Styles Parameter Example_:
+        - http://localhost:3000/api/products/61576/style
 
    4. **Sample Data:**
 
@@ -140,7 +146,7 @@
      }
    ```
 
-4. **Related Product [Method: GET Request]:**
+4. ### Related Product [Method: GET Request]:
 
    1. **API End Point:**
       - Base API: https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/products/:product_id/related
@@ -152,8 +158,8 @@
       | ---------- | ------- | ------------------------------------ |
       | product_id | integer | Required ID of the Product requested |
 
-      - _Related Product Parameter_:
-        - Example: http://localhost:3000/api/products/61576/related
+      - _Related Product Parameter Example_:
+        - http://localhost:3000/api/products/61576/related
 
    4. **Sample Data:**
 
