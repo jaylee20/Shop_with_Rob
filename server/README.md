@@ -36,11 +36,11 @@
 
       - _Page Parameter_:
 
-        - Page API Endpoint: http://localhost:3000/api/products/?page=[Page Number]
+        - Page API Endpoint: http://localhost:3000/api/products/?page=[page_number]
         - Example: http://localhost:3000/api/products/?page=2
 
       - _Count Parameter_:
-        - Count API Endpoint: http://localhost:3000/api/products/?count=[Product Count]
+        - Count API Endpoint: http://localhost:3000/api/products/?count=[product_count]
         - Example: http://localhost:3000/api/products/?count=10
 
    4. **Sample Data:**
