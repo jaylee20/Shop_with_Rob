@@ -4,11 +4,14 @@
 
 ## API Information:
 
-- **Purpose:**
+- **API Purpose:**
   - The Product Information API endpoint will:
     1. Show all products in our store.
     2. Provide detailed information for each product.
     3. List any related product(s).
+    <p></p>
+- **API Data Source:**
+  - The Product Information API retrieves data from an external RESTful API.
     <p></p>
 - **API Documentation Reference**:
   - [Product Information](https://learn-2.galvanize.com/cohorts/2910/blocks/94/content_files/Front%20End%20Capstone/project-atelier-catwalk/products.md)
@@ -23,7 +26,7 @@
       - Base API: https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/products
       - Client API: http://localhost:3000/api/products
    2. **Purpose:**
-      - Retrieves the list of products within our store.
+      - Retrieves a list of products within our store.
    3. **Parameters:**
 
       | Parameter | Type    | Description                                               |
@@ -100,7 +103,7 @@
       - Base API: https://app-hrsei-api.herokuapp.com/api/fec2/hr-sfo/products/:product_id/styles
       - Client API: http://localhost:3000/api/products/:product_id/style
    2. **Purpose:**
-      - Returns the all styles available for the given product.
+      - Returns all style information available for a given product.
    3. **Parameters:**
       | Parameter | Type | Description |
       | ---------- | ------- | ------------------------------------ |
